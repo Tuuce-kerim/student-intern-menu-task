@@ -1,0 +1,16 @@
+# Build резултати
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+
+# Базата данни е локална за всеки ученик - НЕ се качва в GitHub!
+# (създава се сама при първо стартиране)
+menu.db
+menu.db-shm
+menu.db-wal
+
+# macOS
+.DS_Store
