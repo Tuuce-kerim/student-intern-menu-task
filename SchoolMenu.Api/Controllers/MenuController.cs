@@ -156,4 +156,22 @@ public async Task<IActionResult> Delete(int id)
     //            .ToListAsync();
     //   4. return Ok(списъка);
     // ═══════════════════════════════════════════════════════
+
+[HttpGet("week")]
+[AllowAnonymous]
+public async Task<IActionResult> GetWeek([FromQuery] DateTime from)
+{
+   // Край на периода (5 работни дни)
+   var to = from.AddDays(5);
+   // Зарежда всички менюта за периода
+   var menus = await _db.DailyMenus
+       .Include(m => m.Soup)
+       .Include(m => m.MainCourse)
+       .Include(m => m.Dessert)
+       .Where(m => m.Date >= from && m.Date < to)
+       .OrderBy(m => m.Date)
+       .ToListAsync();
+   // Връща списъка
+   return Ok(menus);
+}
 }
