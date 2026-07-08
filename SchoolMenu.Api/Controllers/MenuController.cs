@@ -95,7 +95,26 @@ public class MenuController : ControllerBase
     //
     //  Тествай в Swagger, преди да правиш бутон в admin панела!
     // ═══════════════════════════════════════════════════════
-
+// ═══════════════════════════════════════════════════════
+[HttpPut("{id}")]
+[Authorize(Roles = "kitchen")]
+public async Task<IActionResult> Update(int id, [FromBody] DailyMenu updated)
+{
+   // Намира менюто по Id
+   var menu = await _db.DailyMenus.FindAsync(id);
+   // Ако няма такова меню
+   if (menu == null)
+       return NotFound(new { message = "Няма такова меню" });
+   // Обновява стойностите
+   menu.SoupId = updated.SoupId;
+   menu.MainCourseId = updated.MainCourseId;
+   menu.DessertId = updated.DessertId;
+   menu.Notes = updated.Notes;
+   // Записва промените в базата
+   await _db.SaveChangesAsync();
+   // Връща обновеното меню
+   return Ok(menu);
+}
     // ═══════════════════════════════════════════════════════
     //  ЗАДАЧА 4: ИЗТРИВАНЕ - DELETE /api/menu/{id}
     //
@@ -106,7 +125,23 @@ public class MenuController : ControllerBase
     //   4. await _db.SaveChangesAsync();   // EF прави DELETE
     //   5. return Ok(new { message = "Менюто е изтрито" });
     // ═══════════════════════════════════════════════════════
-
+// ═══════════════════════════════════════════════════════
+[HttpDelete("{id}")]
+[Authorize(Roles = "kitchen")]
+public async Task<IActionResult> Delete(int id)
+{
+   // Намира менюто по Id
+   var menu = await _db.DailyMenus.FindAsync(id);
+   // Ако няма такова меню
+   if (menu == null)
+       return NotFound(new { message = "Няма такова меню" });
+   // Изтрива менюто
+   _db.DailyMenus.Remove(menu);
+   // Записва промените
+   await _db.SaveChangesAsync();
+   // Връща съобщение за успех
+   return Ok(new { message = "Менюто е изтрито" });
+}
     // ═══════════════════════════════════════════════════════
     //  ЗАДАЧА 5: СЕДМИЧНО МЕНЮ - GET /api/menu/week?from=2026-07-06
     //
@@ -122,4 +157,22 @@ public class MenuController : ControllerBase
     //            .ToListAsync();
     //   4. return Ok(списъка);
     // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════
+[HttpGet("week")]
+[AllowAnonymous]
+public async Task<IActionResult> GetWeek([FromQuery] DateTime from)
+{
+   // Край на периода (5 работни дни)
+   var to = from.AddDays(5);
+   // Зарежда всички менюта за периода
+   var menus = await _db.DailyMenus
+       .Include(m => m.Soup)
+       .Include(m => m.MainCourse)
+       .Include(m => m.Dessert)
+       .Where(m => m.Date >= from && m.Date < to)
+       .OrderBy(m => m.Date)
+       .ToListAsync();
+   // Връща списъка
+   return Ok(menus);
+}
 }
