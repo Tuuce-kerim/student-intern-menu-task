@@ -98,3 +98,40 @@ async function postMenuItem(item) {
 //  За ЗАДАЧА 5 (седмица):      getWeek(fromStr)
 //     fetch(`${API_BASE}/menu/week?from=${fromStr}`)
 // ═══════════════════════════════════════════════════════════
+// ============================================================
+// ЗАДАЧА 3: РЕДАКТИРАНЕ НА МЕНЮ - PUT /api/menu/{id}
+// ============================================================
+async function putMenu(id, menuData) {
+ const res = await fetch(`${API_BASE}/menu/${id}`, {
+   method: "PUT",
+   headers: { "Content-Type": "application/json" },
+   body: JSON.stringify(menuData),
+ });
+ if (!res.ok) {
+   const err = await res.json();
+   throw new Error(err.message || "Неуспешно редактиране");
+ }
+ return await res.json();
+}
+// ============================================================
+// ЗАДАЧА 4: ИЗТРИВАНЕ НА МЕНЮ - DELETE /api/menu/{id}
+// ============================================================
+async function deleteMenu(id) {
+ const res = await fetch(`${API_BASE}/menu/${id}`, {
+   method: "DELETE",
+ });
+ if (!res.ok) {
+   const err = await res.json();
+   throw new Error(err.message || "Неуспешно изтриване");
+ }
+ return await res.json();
+}
+// ============================================================
+// ЗАДАЧА 5: СЕДМИЧНО МЕНЮ - GET /api/menu/week
+// ============================================================
+async function getWeek(fromStr) {
+ const res = await fetch(`${API_BASE}/menu/week?from=${fromStr}`);
+ if (!res.ok)
+   throw new Error("Грешка при зареждане на седмичното меню");
+ return await res.json();
+}
