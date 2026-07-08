@@ -125,6 +125,22 @@ public async Task<IActionResult> Update(int id, [FromBody] DailyMenu updated)
     //   5. return Ok(new { message = "Менюто е изтрито" });
     // ═══════════════════════════════════════════════════════
 
+[HttpDelete("{id}")]
+[Authorize(Roles = "kitchen")]
+public async Task<IActionResult> Delete(int id)
+{
+   // Намира менюто по Id
+   var menu = await _db.DailyMenus.FindAsync(id);
+   // Ако няма такова меню
+   if (menu == null)
+       return NotFound(new { message = "Няма такова меню" });
+   // Изтрива менюто
+   _db.DailyMenus.Remove(menu);
+   // Записва промените
+   await _db.SaveChangesAsync();
+   // Връща съобщение за успех
+   return Ok(new { message = "Менюто е изтрито" });
+}
     // ═══════════════════════════════════════════════════════
     //  ЗАДАЧА 5: СЕДМИЧНО МЕНЮ - GET /api/menu/week?from=2026-07-06
     //
