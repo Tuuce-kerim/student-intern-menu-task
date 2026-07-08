@@ -7,7 +7,7 @@ using SchoolMenu.Api.Models;
 namespace SchoolMenu.Api.Controllers;
 
 // ============================================================
-//  MenuController - дневното меню.
+//  MenuController - дневното меню
 //
 //  ГОТОВО (примери, от които да се учиш):
 //    GET  /api/menu?date=2026-07-07   -> менюто за дата
