@@ -95,7 +95,25 @@ public class MenuController : ControllerBase
     //
     //  Тествай в Swagger, преди да правиш бутон в admin панела!
     // ═══════════════════════════════════════════════════════
-
+[HttpPut("{id}")]
+[Authorize(Roles = "kitchen")]
+public async Task<IActionResult> Update(int id, [FromBody] DailyMenu updated)
+{
+   // Намира менюто по Id
+   var menu = await _db.DailyMenus.FindAsync(id);
+   // Ако няма такова меню
+   if (menu == null)
+       return NotFound(new { message = "Няма такова меню" });
+   // Обновява стойностите
+   menu.SoupId = updated.SoupId;
+   menu.MainCourseId = updated.MainCourseId;
+   menu.DessertId = updated.DessertId;
+   menu.Notes = updated.Notes;
+   // Записва промените в базата
+   await _db.SaveChangesAsync();
+   // Връща обновеното меню
+   return Ok(menu);
+}
     // ═══════════════════════════════════════════════════════
     //  ЗАДАЧА 4: ИЗТРИВАНЕ - DELETE /api/menu/{id}
     //
