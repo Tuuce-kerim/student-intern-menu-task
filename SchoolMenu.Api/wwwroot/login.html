@@ -1,50 +1,128 @@
 <!DOCTYPE html>
 <html lang="bg">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вход | Дневно меню</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Arcus Dishes - Вход</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
 </head>
+
 <body>
 
-  <main class="login-box">
-    <h1>🔐 Вход</h1>
+    <div class="login-page">
 
-    <!-- Подсказка за тестване - махни я преди реално ползване! -->
-    <p class="hint">Тестови акаунти: kitchen / kitchen123 &middot; student / student123</p>
+        <div class="login-card">
 
-    <form id="login-form">
-      <input id="username" placeholder="Потребителско име" required>
-      <input id="password" type="password" placeholder="Парола" required>
-      <button type="submit">Влез</button>
-      <!-- Тук се показва съобщение при грешен вход -->
-      <div id="error" class="error"></div>
-    </form>
+            <h1>Arcus Dishes</h1>
 
-    <a href="index.html">← Обратно към менюто</a>
-  </main>
+            <p class="subtitle">
+                Изберете начина на достъп
+            </p>
 
-  <script src="js/api.js"></script>
-  <script>
-    // Логиката на входа е кратка, затова е директно тук.
-    document.getElementById("login-form").addEventListener("submit", async (e) => {
-      e.preventDefault();   // спри презареждането на страницата
+            <div id="roleSelection">
 
-      try {
-        const user = await login(              // функцията е в api.js
-          document.getElementById("username").value,
-          document.getElementById("password").value
-        );
+                <button type="button"
+                        class="role-btn"
+                        onclick="studentLogin()">
+                    Ученик
+                </button>
 
-        // Пренасочваме според ролята:
-        // кухнята -> админ панела, всички останали -> менюто
-        window.location.href = (user.role === "kitchen") ? "admin.html" : "index.html";
-      } catch (err) {
-        // Сървърът върна грешка, напр. "Грешно потребителско име или парола"
-        document.getElementById("error").textContent = err.message;
-      }
-    });
-  </script>
+                <button type="button"
+                        class="role-btn"
+                        onclick="showKitchenLogin()">
+                    Кухня
+                </button>
+
+            </div>
+
+            <form id="kitchenLogin" style="display:none;">
+
+                <input type="text"
+                       id="username"
+                       placeholder="Потребителско име"
+                       required>
+
+                <input type="password"
+                       id="password"
+                       placeholder="Парола"
+                       required>
+
+                <button type="submit" class="login-btn-full">
+                    Вход
+                </button>
+
+                <p id="loginError" style="display:none;"></p>
+
+                <button type="button"
+                        class="role-btn"
+                        onclick="goBack()">
+                    Назад
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Трябва да е преди кода за логина -->
+    <script src="js/api.js"></script>
+
+    <script>
+        function showKitchenLogin() {
+            document.getElementById("roleSelection").style.display = "none";
+            document.getElementById("kitchenLogin").style.display = "block";
+        }
+
+        function studentLogin() {
+            window.location.href = "index.html";
+        }
+
+        function goBack() {
+            document.getElementById("kitchenLogin").style.display = "none";
+            document.getElementById("roleSelection").style.display = "block";
+
+            document.getElementById("loginError").style.display = "none";
+        }
+
+        document
+            .getElementById("kitchenLogin")
+            .addEventListener("submit", async function (event) {
+
+                // Спира презареждането на страницата
+                event.preventDefault();
+
+                const username =
+                    document.getElementById("username").value.trim();
+
+                const password =
+                    document.getElementById("password").value;
+
+                const errorElement =
+                    document.getElementById("loginError");
+
+                errorElement.style.display = "none";
+
+                try {
+                    const user = await login(username, password);
+
+                    console.log("Успешен вход:", user);
+
+                    // След успешен вход към кухнята
+                    window.location.href = "kitchen.html";
+
+                } catch (error) {
+                    errorElement.textContent = error.message;
+                    errorElement.style.display = "block";
+                }
+            });
+    </script>
+
 </body>
 </html>
