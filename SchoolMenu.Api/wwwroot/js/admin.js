@@ -94,3 +94,75 @@ guard().then(user => { if (user) loadItems(); });
 //  4. Провери резултата: отвори index.html и избери същата дата.
 //     Ако менюто се вижда - ГОТОВО, целият кръг работи! 🎉
 // ═══════════════════════════════════════════════════════════
+// ============================================================
+// ЗАДАЧА 1 - Създаване на дневно меню
+// ============================================================
+
+// Попълва даден <select> с ястия
+function fillSelect(selectId, items) {
+    document.getElementById(selectId).innerHTML = items
+        .map(i => `<option value="${i.id}">${i.name}</option>`)
+        .join("");
+}
+
+// Зарежда ястията в трите падащи менюта
+async function loadMenuForm() {
+
+    const items = await getMenuItems();
+
+    fillSelect(
+        "select-soup",
+        items.filter(i => i.type === "soup")
+    );
+
+    fillSelect(
+        "select-main",
+        items.filter(i => i.type === "main")
+    );
+
+    fillSelect(
+        "select-dessert",
+        items.filter(i => i.type === "dessert")
+    );
+
+    // Автоматично избира днешната дата
+    document.getElementById("menu-date-input").value =
+        new Date().toISOString().split("T")[0];
+}
+
+// Изпращане на формата
+document.getElementById("menu-form").addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+        await postMenu({
+
+            date: document.getElementById("menu-date-input").value,
+
+            soupId: Number(document.getElementById("select-soup").value),
+
+            mainCourseId: Number(document.getElementById("select-main").value),
+
+            dessertId: Number(document.getElementById("select-dessert").value),
+
+            notes: document.getElementById("menu-notes").value || null
+
+        });
+
+        alert("Менюто беше публикувано успешно.");
+
+        document.getElementById("menu-form").reset();
+
+        await loadMenuForm();
+
+    }
+    catch (err) {
+
+        alert(err.message);
+
+    }
+
+});
+
