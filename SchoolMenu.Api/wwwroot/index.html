@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcus Dishes — Училищно меню</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ── HEADER ── -->
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="site-logo"><span>🍽️</span> Arcus Dishes</a>
+            <nav class="site-nav">
+                <a href="#menu-section">Меню</a>
+                <a href="#contacts">Контакти</a>
+                <a href="login.html" class="nav-login">Вход за кухня</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+        <div class="container hero-inner">
+            <div class="hero-text">
+                <div class="hero-eyebrow">🎓 Училищна платформа</div>
+                <h1>Дневното меню<br>на една ръка разстояние</h1>
+                <p>Разгледайте всеки ден какво се предлага в училищния стол — супа, основно и десерт, с пълна информация за алергени и грамаж.</p>
+                <a href="#menu-section" class="hero-cta">Виж менюто за днес →</a>
+            </div>
+            <div class="hero-visual">
+                <svg class="hero-illustration" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Табла с ястия">
+                    <circle cx="210" cy="210" r="210" fill="#F0FDF4" />
+                    <ellipse cx="210" cy="330" rx="150" ry="18" fill="#1B4332" opacity=".08" />
+                    <rect x="60" y="150" width="300" height="150" rx="20" fill="#FEFAE0" stroke="#E5E7EB" stroke-width="2" />
+                    <circle cx="140" cy="190" r="46" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="6" />
+                    <circle cx="140" cy="190" r="30" fill="#40916C" />
+                    <path d="M124 182c4-10 28-10 32 0" stroke="#D8F3DC" stroke-width="4" stroke-linecap="round" fill="none" />
+                    <circle cx="250" cy="182" r="52" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="6" />
+                    <rect x="222" y="164" width="56" height="36" rx="8" fill="#F4A261" />
+                    <circle cx="238" cy="178" r="5" fill="#FEFAE0" />
+                    <circle cx="262" cy="188" r="5" fill="#FEFAE0" />
+                    <circle cx="330" cy="205" r="38" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="6" />
+                    <circle cx="330" cy="205" r="22" fill="#E76F51" />
+                    <circle cx="322" cy="198" r="5" fill="#FFF7ED" />
+                    <rect x="80" y="255" width="260" height="10" rx="5" fill="#D8F3DC" />
+                    <rect x="80" y="255" width="150" height="10" rx="5" fill="#2D6A4F" />
+                    <text x="210" y="345" text-anchor="middle" font-family="'Playfair Display', serif" font-size="16" fill="#1B4332" font-weight="600">Супа · Основно · Десерт</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── DATE PICKER ── -->
+    <section class="date-section" id="menu-section">
+        <div class="container">
+            <div class="date-picker-card">
+                <div>
+                    <h2>Изберете дата</h2>
+                    <p>Менюто се публикува само за учебни дни</p>
+                </div>
+                <div class="date-input-wrap">
+                    <button class="date-nav-btn" id="btn-prev" title="Предишен ден">‹</button>
+                    <input type="date" id="menuDate">
+                    <button class="date-nav-btn" id="btn-next" title="Следващ ден">›</button>
+                    <button class="btn-today-pill" id="btn-today">Днес</button>
+                </div>
+            </div>
+            <p class="current-date-label" id="selectedDate">Меню за днес</p>
+        </div>
+    </section>
+
+    <!-- ── MENU ── -->
+    <section class="menu-section">
+        <div class="container">
+            <div id="menu-container">
+                <div class="alert-box">
+                    <div class="alert-icon">⏳</div>
+                    <h3>Зареждане...</h3>
+                    <p>Моля, изчакайте.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer class="site-footer" id="contacts">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">🍽️ Arcus Dishes</div>
+                    <p class="footer-desc">Платформа за дневното меню на учениците. Прозрачна информация за съставките и алергените всеки учебен ден.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Контакти</h4>
+                    <p>📞 +359 888 123 456</p>
+                    <p>✉️ info@arcusdishes.bg</p>
+                    <p>📍 гр. Велико Търново</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Навигация</h4>
+                    <a href="#menu-section">Меню</a>
+                    <a href="login.html">Вход за кухня</a>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2026 Arcus Dishes. Всички права запазени.</div>
+        </div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/student.js"></script>
+</body>
+</html>
