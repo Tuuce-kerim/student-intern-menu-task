@@ -1,40 +1,170 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8">
-  <!-- viewport = страницата да изглежда добре и на телефон -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Дневно меню</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcus Dishes</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-  <header>
-    <h1>🍽️ Дневно меню</h1>
-    <a href="login.html">Вход за кухнята</a>
-  </header>
+    <header class="header" id="home">
+        <div class="container">
+            <div class="logo">Arcus Dishes</div>
 
-  <main>
-    <!-- Датата се попълва от student.js -->
-    <h2 id="menu-date"></h2>
+            <nav>
+                <a href="#home">Начало</a>
+                <a href="#menu">Меню</a>
+                <a href="#contacts">Контакти</a>
+                <a href="login.html" class="login-btn">Вход</a>
+            </nav>
+        </div>
+    </header>
 
-    <!-- ═══════════ ЗАДАЧА 2: Навигация между дните ═══════════
-         Разкоментирай трите бутона по-долу (изтрий този ред и
-         реда след бутоните) и виж стъпките в js/student.js.
+    <section class="hero">
+        <div class="container hero-content">
 
-    <div class="day-nav">
-      <button id="btn-prev">← Вчера</button>
-      <button id="btn-today">Днес</button>
-      <button id="btn-next">Утре →</button>
-    </div>
-         ═══════════════════════════════════════════════════════ -->
+            <div class="hero-text">
+                <h1>Arcus Dishes</h1>
+                <h2>Училищно дневно меню</h2>
 
-    <!-- Тук student.js "рисува" менюто -->
-    <div id="menu-container">Зареждане...</div>
-  </main>
+                <p>
+                    Добре дошли в Arcus Dishes – платформата, която предоставя
+                    лесен достъп до дневното училищно меню. Изберете дата,
+                    разгледайте предлаганите ястия и научете повече за техния
+                    състав, алергени и хранителни характеристики.
+                </p>
 
-  <!-- Редът е важен: първо api.js (функциите), после student.js (ползва ги) -->
-  <script src="js/api.js"></script>
-  <script src="js/student.js"></script>
+                <a href="#menu" class="hero-button">
+                    Разгледай менюто
+                </a>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://geographyproject1.wordpress.com/wp-content/uploads/2026/07/tmp_bfba4506-59ed-4968-83ad-468b1ed9973e.png?w=300"
+                     alt="Arcus Dishes">
+            </div>
+
+        </div>
+    </section>
+
+    <p id="selectedDate" class="selected-date">
+        Меню за днес
+    </p>
+
+    <p class="logo-subtitle">
+        School Daily Menu
+    </p>
+
+    <section class="calendar-section">
+        <div class="container">
+
+            <h2 class="section-title">
+                Изберете дата
+            </h2>
+
+            <div class="calendar-box">
+                <input type="date" id="menuDate">
+            </div>
+
+        </div>
+    </section>
+
+    <main id="menu">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Дневно меню
+            </h2>
+
+            <!-- Само ЕДИН menu-container -->
+            <div id="menu-container">
+                Зареждане...
+            </div>
+
+            <div class="navigation">
+
+                <button id="btn-prev" class="btn btn-outline">
+                    Previous
+                </button>
+
+                <button id="btn-today" class="btn btn-primary">
+                    Today
+                </button>
+
+                <button id="btn-next" class="btn btn-outline">
+                    Next
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="footer" id="contacts">
+
+        <div class="container footer-grid">
+
+            <div>
+                <h3>Arcus Dishes</h3>
+
+                <p>
+                    Платформа за училищно дневно меню,
+                    предоставяща лесен достъп до информация
+                    за храната през всеки учебен ден.
+                </p>
+            </div>
+
+            <div>
+                <h3>Контакти</h3>
+
+                <p>Телефон: +359 888 123 456</p>
+                <p>Email: info@arcusdishes.bg</p>
+                <p>гр. Велико Търново</p>
+            </div>
+
+            <div>
+                <h3>Запитване</h3>
+
+                <form>
+                    <input type="text" placeholder="Вашето име">
+                    <input type="email" placeholder="Вашият имейл">
+                    <textarea placeholder="Вашето съобщение"></textarea>
+
+                    <button type="submit">
+                        Изпрати
+                    </button>
+                </form>
+            </div>
+
+            <div>
+                <h3>Анкета</h3>
+
+                <p>Как оценявате днешното меню?</p>
+
+                <div class="rating">
+                    <button>1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>4</button>
+                    <button>5</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 Arcus Dishes. Всички права запазени.
+        </div>
+
+    </footer>
+
+    <!-- Скриптовете се включват САМО ВЕДНЪЖ -->
+    <script src="js/api.js"></script>
+    <script src="js/student.js"></script>
+
 </body>
 </html>
