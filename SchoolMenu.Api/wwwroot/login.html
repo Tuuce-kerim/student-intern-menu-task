@@ -1,18 +1,92 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcus Dishes — Вход</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
- <!DOCTYPE html> <html lang="bg"> <head>   <meta charset="UTF-8">   <meta name="viewport" content="width=device-width, initial-scale=1.0">   <title>Arcus Dishes — Вход</title>   <link rel="stylesheet" href="css/style.css"> </head> <body>
-  
-   <div class="login-page">     <div class="login-card">
-  
-       <div class="login-card-logo"><span>🍽️</span> Arcus Dishes</div>       <p class="login-subtitle">Изберете начина на достъп</p>
-  
-       <!-- Избор на роля -->       <div id="roleSelection" class="role-buttons">         <button class="role-btn" onclick="studentLogin()">           <span class="role-icon">🎓</span>           <span class="role-info">             <span class="role-name">Ученик</span>             <span class="role-desc">Преглед на дневното меню</span>           </span>           <span class="role-arrow">›</span>         </button>         <button class="role-btn" onclick="showKitchenLogin()">           <span class="role-icon">👩‍🍳</span>           <span class="role-info">             <span class="role-name">Кухня</span>             <span class="role-desc">Управление на менютата</span>           </span>           <span class="role-arrow">›</span>         </button>       </div>
-  
-       <!-- Форма за вход в кухнята -->       <div id="kitchenLoginWrap" style="display:none;">         <button class="form-back-btn" onclick="goBack()">‹ Назад</button>         <p class="login-form-title">Вход за кухня</p>
-  
-         <form id="kitchenLoginForm" class="login-form">           <div class="form-field">             <label for="username">Потребителско име</label>             <input type="text" id="username" placeholder="Въведете потребителско име" required autocomplete="username">           </div>           <div class="form-field">             <label for="password">Парола</label>             <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">           </div>           <div class="login-error" id="loginError"></div>           <button type="submit" class="btn-primary">Вход →</button>         </form>       </div>
-  
-     </div>   </div>
-  
-   <script src="js/api.js"></script>   <script>     function showKitchenLogin() {       document.getElementById("roleSelection").style.display = "none";       document.getElementById("kitchenLoginWrap").style.display = "block";       document.getElementById("username").focus();     }     function studentLogin() { window.location.href = "index.html"; }     function goBack() {       document.getElementById("kitchenLoginWrap").style.display = "none";       document.getElementById("roleSelection").style.display = "flex";       document.getElementById("loginError").style.display = "none";     }
-  
-     document.getElementById("kitchenLoginForm").addEventListener("submit", async (e) => {       e.preventDefault();       const username = document.getElementById("username").value.trim();       const password = document.getElementById("password").value;       const errEl = document.getElementById("loginError");       errEl.style.display = "none";       const btn = e.target.querySelector("button[type=submit]");       btn.textContent = "Влизане..."; btn.disabled = true;       try {         await login(username, password);         window.location.href = "kitchen.html";       } catch (err) {         errEl.textContent = err.message;         errEl.style.display = "block";         btn.textContent = "Вход →"; btn.disabled = false;       }     });   </script> </body> </html>
+  <div class="login-page">
+    <div class="login-card">
+
+      <div class="login-card-logo"><span>🍽️</span> Arcus Dishes</div>
+      <p class="login-subtitle">Изберете начина на достъп</p>
+
+      <!-- Избор на роля -->
+      <div id="roleSelection" class="role-buttons">
+        <button class="role-btn" onclick="studentLogin()">
+          <span class="role-icon">🎓</span>
+          <span class="role-info">
+            <span class="role-name">Ученик</span>
+            <span class="role-desc">Преглед на дневното меню</span>
+          </span>
+          <span class="role-arrow">›</span>
+        </button>
+        <button class="role-btn" onclick="showKitchenLogin()">
+          <span class="role-icon">👩‍🍳</span>
+          <span class="role-info">
+            <span class="role-name">Кухня</span>
+            <span class="role-desc">Управление на менютата</span>
+          </span>
+          <span class="role-arrow">›</span>
+        </button>
+      </div>
+
+      <!-- Форма за вход в кухнята -->
+      <div id="kitchenLoginWrap" style="display:none;">
+        <button class="form-back-btn" onclick="goBack()">‹ Назад</button>
+        <p class="login-form-title">Вход за кухня</p>
+
+        <form id="kitchenLoginForm" class="login-form">
+          <div class="form-field">
+            <label for="username">Потребителско име</label>
+            <input type="text" id="username" placeholder="Въведете потребителско име" required autocomplete="username">
+          </div>
+          <div class="form-field">
+            <label for="password">Парола</label>
+            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          <div class="login-error" id="loginError"></div>
+          <button type="submit" class="btn-primary">Вход →</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    function showKitchenLogin() {
+      document.getElementById("roleSelection").style.display = "none";
+      document.getElementById("kitchenLoginWrap").style.display = "block";
+      document.getElementById("username").focus();
+    }
+    function studentLogin() { window.location.href = "index.html"; }
+    function goBack() {
+      document.getElementById("kitchenLoginWrap").style.display = "none";
+      document.getElementById("roleSelection").style.display = "flex";
+      document.getElementById("loginError").style.display = "none";
+    }
+
+    document.getElementById("kitchenLoginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const errEl = document.getElementById("loginError");
+      errEl.style.display = "none";
+      const btn = e.target.querySelector("button[type=submit]");
+      btn.textContent = "Влизане..."; btn.disabled = true;
+      try {
+        await login(username, password);
+        window.location.href = "kitchen.html";
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.style.display = "block";
+        btn.textContent = "Вход →"; btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
