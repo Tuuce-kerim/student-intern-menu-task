@@ -1,97 +1,194 @@
-// ============================================================
-//  student.js - логиката на ученическата страница (index.html)
-//
-//  ТОВА Е ПРИМЕРЪТ "как се ПОКАЗВАТ данни от базата":
-//    сървър -> api.js (fetch) -> JSON обект -> HTML в страницата
-// ============================================================
-
-// Помощна функция: Date обект -> текст "2026-07-07" (за API-то).
-// Внимание: месеците в JavaScript почват от 0 (януари = 0)!
+// Превръща Date в YYYY-MM-DD
 function dateToStr(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+
+    return `${y}-${m}-${d}`;
 }
 
-// Коя дата гледаме в момента.
-// В ЗАДАЧА 2 ще я променяш с бутоните "Вчера/Днес/Утре".
+// Създава дата от input без проблем с часовата зона
+function strToDate(value) {
+    const [year, month, day] = value.split("-").map(Number);
+    return new Date(year, month - 1, day);
+}
+
+// Текущо избрана дата
 let currentDate = new Date();
 
-// Зарежда менюто за дадена дата и го "рисува" в страницата
+const container = document.getElementById("menu-container");
+const selectedDate = document.getElementById("selectedDate");
+const dateInput = document.getElementById("menuDate");
+
+
+// Зареждане на менюто
 async function loadMenu(date) {
-  const container = document.getElementById("menu-container");
 
-  // Показваме датата на български, напр. "понеделник, 6 юли"
-  document.getElementById("menu-date").textContent =
-    date.toLocaleDateString("bg-BG", { weekday: "long", day: "numeric", month: "long" });
+    // Синхронизира календара
+    dateInput.value = dateToStr(date);
 
-  // Питаме сървъра (функцията е в api.js)
-  const menu = await getMenuForDate(dateToStr(date));
+    // Показва избраната дата
+    selectedDate.textContent =
+        "Меню за " +
+        date.toLocaleDateString("bg-BG", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
 
-  // Кухнята още не е публикувала меню за тази дата:
-  if (!menu) {
-    container.innerHTML =
-      `<div class="alert">Менюто за този ден все още не е публикувано. Провери по-късно!</div>`;
-    return;
-  }
-
-  // Менюто идва като JS обект, напр. menu.soup.name = "Таратор".
-  // "?."  = ако soup е null, не гърми, а дава undefined
-  // "??"  = ако отляво е null/undefined, покажи това отдясно
-  container.innerHTML = `
-    <div class="menu-card">
-      <div class="menu-item">
-        <span class="emoji">🍲</span>
-        <div>
-          <small>Супа</small>
-          <strong>${menu.soup?.name ?? "Няма"}</strong>
-          ${menu.soup?.allergens ? `<em>алергени: ${menu.soup.allergens}</em>` : ""}
+    // Показва зареждане
+    container.innerHTML = `
+        <div class="alert">
+            Зареждане на менюто...
         </div>
-      </div>
-      <div class="menu-item">
-        <span class="emoji">🍛</span>
-        <div>
-          <small>Основно</small>
-          <strong>${menu.mainCourse?.name ?? "Няма"}</strong>
-          ${menu.mainCourse?.allergens ? `<em>алергени: ${menu.mainCourse.allergens}</em>` : ""}
-        </div>
-      </div>
-      <div class="menu-item">
-        <span class="emoji">🍰</span>
-        <div>
-          <small>Десерт</small>
-          <strong>${menu.dessert?.name ?? "Няма"}</strong>
-          ${menu.dessert?.allergens ? `<em>алергени: ${menu.dessert.allergens}</em>` : ""}
-        </div>
-      </div>
-      ${menu.notes ? `<p class="notes">ℹ️ ${menu.notes}</p>` : ""}
-    </div>`;
+    `;
+
+    try {
+
+        // Взимаме менюто от API
+        const menu = await getMenuForDate(dateToStr(date));
+
+        // Ако няма меню
+        if (!menu) {
+            container.innerHTML = `
+                <div class="alert">
+                    Менюто за този ден все още не е публикувано.
+                </div>
+            `;
+            return;
+        }
+
+        // Показване на менюто
+        container.innerHTML = `
+            <div class="menu-card">
+
+                <div class="menu-item">
+                    <span class="emoji">🍲</span>
+
+                    <div>
+                        <small>Супа</small>
+
+                        <strong>
+                            ${menu.soup?.name ?? "Няма"}
+                        </strong>
+
+                        ${menu.soup?.allergens
+                ? `<em>Алергени: ${menu.soup.allergens}</em>`
+                : ""
+            }
+                    </div>
+                </div>
+
+
+                <div class="menu-item">
+                    <span class="emoji">🍛</span>
+
+                    <div>
+                        <small>Основно ястие</small>
+
+                        <strong>
+                            ${menu.mainCourse?.name ?? "Няма"}
+                        </strong>
+
+                        ${menu.mainCourse?.allergens
+                ? `<em>Алергени: ${menu.mainCourse.allergens}</em>`
+                : ""
+            }
+                    </div>
+                </div>
+
+
+                <div class="menu-item">
+                    <span class="emoji">🍰</span>
+
+                    <div>
+                        <small>Десерт</small>
+
+                        <strong>
+                            ${menu.dessert?.name ?? "Няма"}
+                        </strong>
+
+                        ${menu.dessert?.allergens
+                ? `<em>Алергени: ${menu.dessert.allergens}</em>`
+                : ""
+            }
+                    </div>
+                </div>
+
+                ${menu.notes
+                ? `<p class="notes">ℹ️ ${menu.notes}</p>`
+                : ""
+            }
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error("Грешка при зареждане на менюто:", error);
+
+        container.innerHTML = `
+            <div class="alert">
+                Възникна грешка при зареждането на менюто.
+            </div>
+        `;
+    }
 }
 
-// При отваряне на страницата -> покажи менюто за ДНЕС
-loadMenu(currentDate);
 
-// ═══════════════════════════════════════════════════════════
-//  ЗАДАЧА 2: Навигация "← Вчера | Днес | Утре →"
-//
-//  1. В index.html разкоментирай блока с трите бутона
-//  2. Тук напиши функция, която мести датата с N дни:
-//
-//       function changeDay(days) {
-//         currentDate.setDate(currentDate.getDate() + days);
-//         loadMenu(currentDate);
-//       }
-//
-//  3. Закачи бутоните за функцията:
-//
-//       document.getElementById("btn-prev").onclick  = () => changeDay(-1);
-//       document.getElementById("btn-next").onclick  = () => changeDay(+1);
-//       document.getElementById("btn-today").onclick = () => {
-//         currentDate = new Date();
-//         loadMenu(currentDate);
-//       };
-//
-//  Тествай: SeedData слага меню за днес И за утре,
-//  така че "Утре →" трябва да покаже друго меню!
-// ═══════════════════════════════════════════════════════════
+// Previous
+document.getElementById("btn-prev").addEventListener("click", function () {
+
+    currentDate.setDate(currentDate.getDate() - 1);
+
+    loadMenu(currentDate);
+});
+
+
+// Today
+document.getElementById("btn-today").addEventListener("click", function () {
+
+    currentDate = new Date();
+
+    loadMenu(currentDate);
+});
+
+
+// Next
+document.getElementById("btn-next").addEventListener("click", function () {
+
+    currentDate.setDate(currentDate.getDate() + 1);
+
+    loadMenu(currentDate);
+});
+
+
+// Избор на дата от календара
+dateInput.addEventListener("change", function () {
+
+    if (!this.value) {
+        return;
+    }
+
+    const selected = strToDate(this.value);
+    const day = selected.getDay();
+
+    // Събота или неделя
+    if (day === 0 || day === 6) {
+
+        alert("Меню се предлага само в учебни дни.");
+
+        this.value = dateToStr(currentDate);
+
+        return;
+    }
+
+    currentDate = selected;
+
+    loadMenu(currentDate);
+});
+
+
+// Първоначално зареждане
+loadMenu(currentDate);
